@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="시그의 작업 기록과 목표, 그리고 생각.">
+  <title>시그로그</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='11' fill='%23c2683a'/%3E%3Cpath d='M12 13h16M12 20h12M12 27h8' stroke='white' stroke-width='4' stroke-linecap='round'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <header class="top">
+    <a class="brand" href="#today"><span class="mark">S</span>시그로그</a>
+    <nav aria-label="주 메뉴">
+      <a href="#today" data-view="today">오늘</a>
+      <a href="#records" data-view="records">기록</a>
+      <a href="#goals" data-view="goals">목표</a>
+      <a href="#thoughts" data-view="thoughts">생각</a>
+    </nav>
+  </header>
+  <main id="app" aria-live="polite"><p class="muted">불러오는 중…</p></main>
+  <footer><span id="updated"></span></footer>
+</body>
+</html>
