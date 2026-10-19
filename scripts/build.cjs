@@ -67,3 +67,6 @@ fs.mkdirSync(dist);
 for (const f of ['index.html', 'app.js', 'styles.css']) fs.copyFileSync(path.join(root, f), path.join(dist, f));
 fs.writeFileSync(path.join(dist, 'data.json'), JSON.stringify(data));
 fs.writeFileSync(path.join(dist, '.nojekyll'), '');
+// Images such as the Discord embed banner are served from the site.
+fs.mkdirSync(path.join(dist, 'assets'));
+for (const f of list('assets', /\.(png|jpe?g|gif|webp)$/)) fs.copyFileSync(path.join(root, 'assets', f), path.join(dist, 'assets', f));

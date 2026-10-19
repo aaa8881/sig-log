@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<!-- Source for assets/discord-banner.png (1200x400). Render: node scripts/render-banner.cjs -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;700&family=JetBrains+Mono:wght@500;700&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+  html,body{margin:0;width:1200px;height:400px;overflow:hidden;background:#07070a}
+  .b{position:relative;width:1200px;height:400px;overflow:hidden;font-family:"Chakra Petch","Pretendard Variable",sans-serif;color:#f1f0ea;
+     background:radial-gradient(700px 300px at 85% 0%,rgba(255,79,216,.28),transparent 60%),radial-gradient(600px 300px at 10% 100%,rgba(200,255,61,.18),transparent 60%),#07070a}
+  /* perspective grid floor */
+  .floor{position:absolute;left:-200px;right:-200px;bottom:-10px;height:200px;transform:perspective(300px) rotateX(58deg);transform-origin:bottom;
+     background-image:linear-gradient(rgba(200,255,61,.55) 2px,transparent 2px),linear-gradient(90deg,rgba(255,79,216,.45) 2px,transparent 2px);
+     background-size:60px 40px;mask-image:linear-gradient(to top,#000 30%,transparent 100%);-webkit-mask-image:linear-gradient(to top,#000 30%,transparent 100%)}
+  .sun{position:absolute;right:250px;top:46px;width:230px;height:230px;border-radius:50%;
+     background:linear-gradient(#ff4fd8,#ffb03d 70%);
+     -webkit-mask-image:repeating-linear-gradient(#000 0 14px,transparent 14px 20px);mask-image:repeating-linear-gradient(#000 0 14px,transparent 14px 20px);
+     filter:drop-shadow(0 0 40px rgba(255,79,216,.6));opacity:.9}
+  .scan{position:absolute;inset:0;background:repeating-linear-gradient(rgba(255,255,255,.035) 0 1px,transparent 1px 3px);pointer-events:none}
+  .frame{position:absolute;inset:18px;border:1px solid rgba(200,255,61,.35);clip-path:polygon(0 0,calc(100% - 40px) 0,100% 40px,100% 100%,40px 100%,0 calc(100% - 40px))}
+  .tag{position:absolute;left:64px;top:52px;font-family:"JetBrains Mono",monospace;font-size:16px;letter-spacing:.18em;color:#c8ff3d}
+  .tag b{background:#c8ff3d;color:#07070a;padding:2px 8px;margin-right:12px}
+  .title{position:absolute;left:58px;top:96px;font-size:150px;font-weight:700;line-height:1;letter-spacing:-.02em;
+     text-shadow:4px 0 0 rgba(255,79,216,.85),-4px 0 0 rgba(0,240,255,.6),0 0 30px rgba(200,255,61,.35)}
+  .title span{color:#c8ff3d}
+  .ko{position:absolute;left:66px;top:258px;font-family:"Pretendard Variable",sans-serif;font-weight:800;font-size:30px;letter-spacing:.02em}
+  .ko i{font-style:normal;color:#ff4fd8;margin:0 10px}
+  .url{position:absolute;left:66px;bottom:46px;font-family:"JetBrains Mono",monospace;font-size:18px;color:#8d8b93;letter-spacing:.06em}
+  .url em{font-style:normal;color:#c8ff3d}
+  .bars{position:absolute;right:64px;bottom:50px;display:flex;gap:6px;align-items:flex-end}
+  .bars i{display:block;width:8px;background:#c8ff3d;opacity:.85}
+  .code{position:absolute;right:64px;top:52px;font-family:"JetBrains Mono",monospace;font-size:13px;color:rgba(241,240,234,.55);text-align:right;line-height:1.7;letter-spacing:.1em}
+</style>
+</head>
+<body>
+<div class="b">
+  <div class="sun"></div>
+  <div class="floor"></div>
+  <div class="frame"></div>
+  <div class="tag"><b>SYS</b>WORKLOG // ONLINE</div>
+  <div class="title">SIG<span>LOG</span></div>
+  <div class="ko">시그로그<i>/</i>오늘 한 일</div>
+  <div class="code">NODE.BEARTOWN<br>CLAUDE · CODEX · AGY<br>STATUS: SHIPPING</div>
+  <div class="url">&gt;&gt; <em>aaa8881.github.io/sig-log</em></div>
+  <div class="bars"><i style="height:14px"></i><i style="height:26px"></i><i style="height:18px"></i><i style="height:34px"></i><i style="height:22px"></i><i style="height:40px"></i></div>
+  <div class="scan"></div>
+</div>
+</body>
+</html>
