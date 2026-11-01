@@ -113,6 +113,34 @@ function gameReview(games) {
   }).join('');
 }
 
+const LIFE_CLASS = { '식단': 'r-element', '운동': 'r-trend', '육아': 'r-kill' };
+const lifeTemplate = () => '- 식단: \n- 운동: \n- 육아: \n';
+function newLifeLink() {
+  const p = seoulParts();
+  return gh(`new/${data.site.branch}/life?filename=${encodeURIComponent(`${p.year}-${p.month}-${p.day}.md`)}&value=${encodeURIComponent(lifeTemplate())}`);
+}
+const lifeRow = (e) => `<li><span class="reason ${LIFE_CLASS[e.key] || 'r-etc'}">${esc(e.key)}</span> ${esc(e.text)}</li>`;
+
+function lifeCard(day) {
+  return `<article class="card"><div class="card-head"><span class="date">${fmtDate(day.date)}<small>${fmtWeekday(day.date)}</small></span>
+    <a class="muted small" href="${gh(`edit/${data.site.branch}/life/${day.date}.md`)}" target="_blank" rel="noopener">고치기</a></div>
+    ${day.entries.length ? `<ul class="game-list life-list">${day.entries.map(lifeRow).join('')}</ul>` : ''}
+    ${day.note ? `<div class="prose game-comment">${md(day.note)}</div>` : ''}</article>`;
+}
+
+// Month-by-month: what was written about each topic, gathered together. No scores or streaks.
+function lifeReview(days) {
+  const months = {};
+  for (const d of days) for (const e of d.entries) {
+    const m = (months[d.date.slice(0, 7)] = months[d.date.slice(0, 7)] || {});
+    (m[e.key] = m[e.key] || []).push({ date: d.date, text: e.text });
+  }
+  const order = (k) => { const i = (data.lifeKeys || []).indexOf(k); return i < 0 ? 99 : i; };
+  return Object.keys(months).sort().reverse().map((k) => `<article class="card"><div class="card-head"><span class="date">${fmtMonth(k + '-01')}</span></div>
+    ${Object.keys(months[k]).sort((x, y) => order(x) - order(y)).map((key) => `<p class="label">${esc(key)}</p><ul class="game-list">${months[k][key].map((e) =>
+      `<li><span class="muted">${fmtDate(e.date)}</span> ${esc(e.text)}</li>`).join('')}</ul>`).join('')}</article>`).join('');
+}
+
 const views = {
   today() {
     const latest = data.days[0];
@@ -147,6 +175,13 @@ const views = {
       <div class="filters">${filters}</div>
       ${shown.map(gameCard).join('') || '<p class="empty">아직 기록한 게임이 없어요.</p>'}
       ${games.length ? `<h2 style="margin-top:28px">돌아보기</h2>${gameReview(games) || '<p class="empty">플레이 기록이 쌓이면 월별로 정리돼요.</p>'}` : ''}`;
+  },
+  life() {
+    const days = data.life || [];
+    return `<h1>생활</h1><p class="lead">일과 놀이 말고, 오래 살기 위한 식단·운동·육아 이야기예요. 쓰고 싶은 날만 적어요.</p>
+      <div class="actions"><a class="btn" href="${newLifeLink()}" target="_blank" rel="noopener">오늘 적기</a></div>
+      ${days.map(lifeCard).join('') || '<p class="empty">아직 적은 생활 기록이 없어요.</p>'}
+      ${days.length ? `<h2 style="margin-top:28px">모아 보기</h2>${lifeReview(days)}` : ''}`;
   },
   thoughts() {
     const list = data.thoughts.map((t) => `<article class="card thought"><div class="when">${fmtDate(t.date)} ${fmtWeekday(t.date)}${t.time ? ` · ${t.time}` : ''}</div><div class="prose">${md(t.body)}</div></article>`).join('');

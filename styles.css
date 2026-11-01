@@ -96,3 +96,5 @@ ul.items ul li::before{content:"–";position:absolute;left:0;color:#55545c}
 .game-list{list-style:none;padding:0;margin:0}
 .game-list li{padding:3px 0;font-size:15px}
 .filters .count{font-family:var(--mono);opacity:.7;margin-left:2px}
+.life-list li{display:flex;gap:8px;align-items:baseline}
+.life-list .reason{flex:none}

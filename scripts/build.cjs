@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Builds dist/ for GitHub Pages: static files + data.json compiled from log/, goals.md and thoughts/.
+// Builds dist/ for GitHub Pages: static files + data.json compiled from log/, goals.md, thoughts/, games/ and life/.
 // Usage: node scripts/build.cjs [--check]   (--check validates only, writes nothing)
 'use strict';
 const fs = require('fs');
@@ -94,6 +94,23 @@ function parseGame(file) {
   return g;
 }
 
+// life/YYYY-MM-DD.md → { date, entries: [{ key, text }], note }. Lines are "- 항목: 내용"; anything else is a free note.
+const LIFE_KEYS = ['식단', '운동', '육아'];
+function parseLife(file) {
+  const m = file.match(/^(\d{4}-\d{2}-\d{2})/);
+  if (!m) { errors.push(`life/${file}: 파일 이름은 YYYY-MM-DD.md 형식이어야 함`); return null; }
+  const entries = []; const note = [];
+  for (const line of read(`life/${file}`).split('\n')) {
+    if (/^# /.test(line)) continue;
+    const e = line.match(/^- ([^:：]{1,12})[:：]\s*(.+)$/);
+    if (e) entries.push({ key: e[1].trim(), text: e[2].trim() }); else note.push(line);
+  }
+  const body = note.join('\n').trim();
+  if (!entries.length && !body) return null;
+  return { date: m[1], entries, note: body };
+}
+const life = list('life', /^[^_.].*\.md$/).map(parseLife).filter(Boolean).sort((a, b) => b.date.localeCompare(a.date));
+
 const games = list('games', /^[^_.].*\.md$/).map(parseGame)
   .sort((a, b) => (b.lastPlayed || '').localeCompare(a.lastPlayed || ''));
 
@@ -104,8 +121,8 @@ const goals = fs.existsSync(path.join(root, 'goals.md')) ? read('goals.md') : ''
 const site = JSON.parse(read('site.json'));
 
 if (errors.length) { console.error(errors.join('\n')); process.exit(1); }
-const data = { site, builtAt: new Date().toISOString(), days, goals, thoughts, games, gameReasons: GAME_REASONS };
-console.log(`ok: ${days.length} days, ${thoughts.length} thoughts, ${games.length} games`);
+const data = { site, builtAt: new Date().toISOString(), days, goals, thoughts, games, gameReasons: GAME_REASONS, life, lifeKeys: LIFE_KEYS };
+console.log(`ok: ${days.length} days, ${thoughts.length} thoughts, ${games.length} games, ${life.length} life`);
 if (checkOnly) process.exit(0);
 
 const dist = path.join(root, 'dist');
